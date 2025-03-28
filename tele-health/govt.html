@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TeleHealth - Government Hospitals</title>
+    <link rel="shortcut icon" href="images/logo-hospital.png" type="image/x-icon">
+    
+    <!-- Bootstrap & FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* General Styling */
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(to right, #6a11cb, #2575fc);
+    color: white;
+}
+
+/* Navbar */
+.navbar-brand {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+}
+
+.logo-T {
+    color: yellow;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.logo-H {
+    color: orange;
+    font-size: 28px;
+    font-weight: bold;
+    margin-left: 5px;
+}
+
+/* Search Bar */
+#searchBar {
+    width: 40%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Hospital Cards */
+.hospital-card {
+    background: white;
+    color: black;
+    padding: 15px;
+    margin: 10px;
+    border-radius: 8px;
+    text-align: center;
+    transition: transform 0.3s;
+}
+
+.hospital-card:hover {
+    transform: scale(1.1);
+    background-color: #ffcc00;
+}
+
+/* Direction Icon */
+.direction-icon {
+    font-size: 24px;
+    color: red;
+    cursor: pointer;
+}
+
+/* Hospital Details Box */
+.details-box {
+    background: white;
+    color: black;
+    padding: 20px;
+    border-radius: 10px;
+    width: 60%;
+    margin: auto;
+    text-align: left;
+}
+
+/* Hide Hospital Details */
+.hidden {
+    display: none;
+}
+
+/* Footer Styles */
+/* Ensure the whole page takes full height */
+html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Push the footer to the bottom */
+.main-content {
+    flex: 1; /* This pushes the footer down */
+}
+
+/* Footer Styles */
+footer {
+    background: #2c3e50;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    width: 100%;
+    position: relative;
+    bottom: -150px;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    padding-bottom: 10px;
+}
+
+.footer-section {
+    width: 200px;
+}
+
+.footer-section h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #1abc9c;
+    padding-bottom: 5p;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-section ul li {
+    margin-bottom: 8px;
+}
+
+.footer-section ul li a {
+    color: white;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.footer-section ul li a:hover {
+    color: #1abc9c;
+}
+
+.footer-bottom {
+    border-top: 1px solid white;
+    padding-top: 10px;
+    font-size: 14px;
+}
+
+
+    </style>
+    
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <span class="logo-T">T</span><span class="logo-H">H</span> TeleHealth
+            </a>
+            <input type="text" id="searchBar" class="form-control" placeholder="Search Hospitals...">
+        </div>
+    </nav>
+
+    <!-- Home Section -->
+    <section id="home" class="text-center">
+        <h1>Welcome to TeleHealth - Government Hospitals</h1>
+    </section>
+
+    <!-- Location Section -->
+    <section id="location">
+        <h2 class="text-center">Our Hospital Locations</h2>
+
+        <div class="container">
+            <div class="row">
+
+                <!-- Tirupati -->
+                <div class="col-md-4">
+                    <div class="hospital-card" onclick="showDetails('Tirupati Hospital')">
+                        <h3>Tirupati</h3>
+                    </div>
+                </div>
+
+                <!-- Chennai -->
+                <div class="col-md-4">
+                    <div class="hospital-card" onclick="showDetails('Chennai Hospital')">
+                        <h3>Chennai</h3>
+                    </div>
+                </div>
+
+                <!-- Vellore -->
+                <div class="col-md-4">
+                    <div class="hospital-card" onclick="showDetails('Vellore Hospital')">
+                        <h3>Vellore</h3>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Hospital Details Section -->
+    <section id="hospital-details" class="hidden">
+        <h2 class="text-center">Hospital Details</h2>
+        <div id="details-content" class="details-box"></div>
+    </section>
+    
+    <!-- Footer Section -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>TeleHealth</h3>
+                <p>Your trusted healthcare navigation system.</p>
+            </div>
+    
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="#location">Location</a></li>
+                </ul>
+            </div>
+    
+            <div class="footer-section">
+                <h3>Services</h3>
+                <ul>
+                    <li>Emergency Support</li>
+                    <li>Doctor Consultation</li>
+                    <li>24/7 Medical Assistance</li>
+                </ul>
+            </div>
+    
+            <div class="footer-section">
+                <h3>Connect With Us</h3>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+    
+        <div class="footer-bottom">
+            <p>© 2025 TeleHealth. All rights reserved.|WEB LINES FUN</p>
+        </div>
+    </footer>
+
+
+
+    <script>
+
+document.addEventListener("DOMContentLoaded", function () {
+    console.log("Script loaded successfully.");
+
+    // Hospital Details Data
+    const hospitalData = {
+        "SVR Ruia Government General Hospital": {
+            name: "SVR Ruia Government General Hospital",
+            location: "Tirupati, Andhra Pradesh",
+            doctors: "Dr. Kumar, Dr. Ramesh, Dr. Priya",
+            facilities: "Emergency, Cardiology, Maternity",
+            services: "24/7 Ambulance, Free Check-ups",
+            coords: "13.644868395776129, 79.40577148650718"
+        },
+        "Primary Health Centre": {
+            name: "Primary Health Centre",
+            location: "Tirupati, Andhra Pradesh",
+            doctors: "Dr. Suresh, Dr. Priya, Dr. Ravi",
+            facilities: "General Medicine, Pediatrics",
+            services: "Vaccination, Blood Tests",
+            coords: "13.631469630442716, 79.41499529919817"
+        },
+        "SVRR Emergency Block": {
+            name: "SVRR Emergency Block",
+            location: "Tirupati, Andhra Pradesh",
+            doctors: "Dr. Suresh, Dr. Priya, Dr. Ravi",
+            facilities: "ICU, Pediatrics, Orthopedics",
+            services: "Blood Bank, Vaccination",
+            coords: "13.645879671039106, 79.40745712327013"
+        },
+        "Rajiv Gandhi Government General Hospital": {
+            name: "Rajiv Gandhi Government General Hospital",
+            location: "Chennai, Tamil Nadu",
+            doctors: "Dr. Meena, Dr. Arjun, Dr. Lakshmi",
+            facilities: "ICU, Neurology, Pediatrics",
+            services: "Blood Bank, Vaccination",
+            coords: "13.081614779284989, 80.27677219544675"
+        },
+        "Stanley Medical College Hospital": {
+            name: "Stanley Medical College Hospital",
+            location: "Chennai, Tamil Nadu",
+            doctors: "Dr. Ravi, Dr. Kavitha, Dr. Prem",
+            facilities: "Cancer Treatment, Cardiology",
+            services: "Surgery, Physiotherapy",
+            coords: "13.106612088202493, 80.28726881359832"
+        },
+        "Government Vellore Medical College Hospital": {
+            name: "Government Vellore Medical College Hospital",
+            location: "Vellore, Tamil Nadu",
+            doctors: "Dr. Anil, Dr. Kavya, Dr. Vishal",
+            facilities: "Orthopedics, Oncology, Eye Care",
+            services: "Physiotherapy, Surgery",
+            coords: "12.845376637390132, 79.13736180391562"
+        },
+        "CMC Vellore Hospital": {
+            name: "CMC Vellore Hospital",
+            location: "Vellore, Tamil Nadu",
+            doctors: "Dr. Rohan, Dr. Priya, Dr. Ajay",
+            facilities: "Surgery, Neurology, Emergency",
+            services: "MRI, CT Scan, Dialysis",
+            coords: "12.92449787892174, 79.13526310131894"
+        },
+        "Government Hospital": {
+            name: "Government Hospital",
+            location: "Vellore, Tamil Nadu",
+            doctors: "Dr. Anil, Dr. Kavya, Dr. Vishal",
+            facilities: "Orthopedics, Oncology, Eye Care",
+            services: "Physiotherapy, Surgery",
+            coords: "12.933262479545519, 79.15737376406372"
+        },
+    };
+
+
+     // Search Bar Functionality
+     document.getElementById("searchBar").addEventListener("input", function () {
+        let query = this.value.toLowerCase();
+        let detailsContent = document.getElementById("details-content");
+        let resultsFound = [];
+
+         // If search bar is empty, clear results
+        if (query.trim() === "") {
+            detailsContent.innerHTML = "";
+            document.getElementById("hospital-details").classList.add("hidden");
+            return;
+        }
+
+        // Search hospitals by name or location
+        for (let hospital in hospitalData) {
+            let data = hospitalData[hospital];
+            if (hospital.toLowerCase().includes(query) || data.location.toLowerCase().includes(query)) {
+                resultsFound.push(`
+                    <div class="hospital-card">
+                        <h3>${data.name}</h3>
+                        <p><strong>Location:</strong> ${data.location}</p>
+                        <p><strong>Doctors:</strong> ${data.doctors}</p>
+                        <p><strong>Facilities:</strong> ${data.facilities}</p>
+                        <p><strong>Services:</strong> ${data.services}</p>
+                        <a href="https://www.google.com/maps?q=${data.coords}" target="_blank">
+                            <i class="fas fa-map-marker-alt direction-icon"></i> View on Google Maps
+                        </a>
+                    </div>
+                `);
+            }
+        }
+
+        // Display results or error message
+        if (resultsFound.length > 0) {
+            detailsContent.innerHTML = resultsFound.join("<hr>"); // Show all matching hospitals
+        } else {
+            detailsContent.innerHTML = `<p style="color:red; text-align:center;">No hospital details found. Try a different name or location.</p>`;
+        }
+
+        document.getElementById("hospital-details").classList.remove("hidden");
+    });
+});
+
+    // Function to open Google Maps for directions
+    window.openGoogleMaps = function (coords) {
+        window.open(`https://www.google.com/maps?q=${coords}`, "_blank");
+    };
+
+
+  
+    </script>
+</body>
+</html>

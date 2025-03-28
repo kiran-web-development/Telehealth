@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blood Donor Finder</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <style>
+        /* General Styling */
+body {
+    background-color: #f8f9fa;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Navbar */
+.navbar {
+    background-color: #b71c1c !important;
+}
+.navbar-brand {
+    font-weight: bold;
+}
+.logo-T {
+    color: yellow;
+    font-size: 24px;
+}
+.logo-H {
+    color: cyan;
+    font-size: 24px;
+}
+.nav-link {
+    color: white !important;
+    transition: 0.3s;
+}
+.nav-link:hover {
+    color: #ffcccb !important;
+}
+
+/* Search Bar */
+.search-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+#searchBar {
+    width: 50%;
+    padding: 10px;
+    font-size: 18px;
+    border-radius: 25px;
+    border: 2px solid #b71c1c;
+    outline: none;
+    transition: 0.3s;
+}
+#searchBar:focus {
+    border-color: #ff5722;
+}
+
+/* Donor Details Section */
+#donor-details {
+    max-width: 800px;
+    margin: 20px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Donor Card */
+.donor-card {
+    padding: 15px;
+    background: #ffebee;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    transition: 0.3s;
+}
+.donor-card:hover {
+    transform: scale(1.05);
+    cursor: pointer;
+}
+
+/* Google Maps Link */
+.direction-icon {
+    color: red;
+    margin-left: 10px;
+}
+
+/* Footer */
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+    background: #b71c1c;
+    color: white;
+}
+
+/* Cursor Animation */
+body {
+    cursor: url('https://cur.cursors-4u.net/health/hea-4/hea324.cur'), auto;
+}
+
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <!-- Logo -->
+            <a class="navbar-brand" href="#"><i class="fas fa-tint"></i> 
+                <span class="logo-T">T</span><span class="logo-H">H</span> TeleHealth
+            </a>
+    
+            <!-- Toggler Button for Mobile -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+    
+            <!-- Navbar Links -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="blood.html">Home</a></li>
+    
+                    <!-- Location Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="locationDropdown" data-bs-toggle="dropdown">Location</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#" onclick="filterByLocation('Tirupati')">Tirupati</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="filterByLocation('Chennai')">Chennai</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="filterByLocation('Vellore')">Vellore</a></li>
+                        </ul>
+                    </li>
+    
+                    <!-- Blood Group Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="bloodGroupDropdown" data-bs-toggle="dropdown">Donors</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#" onclick="filterByBloodGroup('A+')">A+</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="filterByBloodGroup('A-')">A-</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="filterByBloodGroup('B+')">B+</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="filterByBloodGroup('B-')">B-</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="filterByBloodGroup('O+')">O+</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="filterByBloodGroup('O-')">O-</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="filterByBloodGroup('AB+')">AB+</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="filterByBloodGroup('AB-')">AB-</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Search Section -->
+    <div class="search-container">
+        <input type="text" id="searchBar" class="form-control" placeholder="Search by donor name, blood group, or location...">
+    </div>
+
+    <!-- Results Section -->
+    <div id="donor-details" class="hidden">
+        <div id="details-content"></div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 TeleHealth. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+       document.addEventListener("DOMContentLoaded", function () {
+    console.log("Script loaded successfully.");
+
+    // Blood Donor Data (Now Includes Gender, Removed Coords)
+    const bloodDonors = {
+        "John Doe": { name: "John Doe", gender: "Male", bloodGroup: "A+", location: "Tirupati", contact: "9876543210", availability: "Available" },
+        "Rahul Sharma": { name: "Rahul Sharma", gender: "Male", bloodGroup: "B+", location: "Tirupati", contact: "9845671234", availability: "Available" },
+        "Meena Reddy": { name: "Meena Reddy", gender: "Female", bloodGroup: "O+", location: "Chennai", contact: "9871234567", availability: "Unavailable" },
+        "Arjun Kumar": { name: "Arjun Kumar", gender: "Male", bloodGroup: "AB+", location: "Chennai", contact: "9865321470", availability: "Available" },
+        "Kavitha R": { name: "Kavitha R", gender: "Female", bloodGroup: "A-", location: "Vellore", contact: "9876540987", availability: "Available" },
+        "Rohan Patel": { name: "Rohan Patel", gender: "Male", bloodGroup: "B-", location: "Vellore", contact: "9823456789", availability: "Unavailable" },
+        "Sneha Iyer": { name: "Sneha Iyer", gender: "Female", bloodGroup: "O-", location: "Hyderabad", contact: "9845123789", availability: "Available" },
+        "Anil Verma": { name: "Anil Verma", gender: "Male", bloodGroup: "AB-", location: "Hyderabad", contact: "9887456230", availability: "Unavailable" }
+    };
+
+    // 🔍 Search Bar Functionality
+    document.getElementById("searchBar").addEventListener("input", function () {
+        let query = this.value.toLowerCase();
+        let detailsContent = document.getElementById("details-content");
+        let resultsFound = [];
+
+        if (query.trim() === "") {
+            detailsContent.innerHTML = "";
+            document.getElementById("donor-details").classList.add("hidden");
+            return;
+        }
+
+        for (let donor in bloodDonors) {
+            let data = bloodDonors[donor];
+            if (
+                donor.toLowerCase().includes(query) ||
+                data.bloodGroup.toLowerCase().includes(query) ||
+                data.location.toLowerCase().includes(query)
+            ) {
+                resultsFound.push(displayDonorCard(data));
+            }
+        }
+
+        displayResults(resultsFound, detailsContent);
+    });
+
+    // 📍 Dropdown Filter Functionality (Location)
+    document.getElementById("locationDropdown").addEventListener("change", function () {
+        filterResults("location", this.value.toLowerCase());
+    });
+
+    // 🩸 Dropdown Filter Functionality (Blood Group)
+    document.getElementById("bloodGroupDropdown").addEventListener("change", function () {
+        filterResults("bloodGroup", this.value.toLowerCase());
+    });
+
+    // 👨‍⚕️ Dropdown Filter Functionality (Gender)
+    document.getElementById("genderDropdown").addEventListener("change", function () {
+        filterResults("gender", this.value.toLowerCase());
+    });
+
+    // 🔄 Reusable Function to Filter Results
+    function filterResults(filterType, filterValue) {
+        let detailsContent = document.getElementById("details-content");
+        let resultsFound = [];
+
+        if (filterValue === "all") {
+            detailsContent.innerHTML = "";
+            return;
+        }
+
+        for (let donor in bloodDonors) {
+            let data = bloodDonors[donor];
+            if (data[filterType].toLowerCase() === filterValue && data.availability === "Available") {
+                resultsFound.push(displayDonorCard(data));
+            }
+        }
+
+        displayResults(resultsFound, detailsContent);
+    }
+
+    // 🎭 Function to Display Donor Card
+    function displayDonorCard(data) {
+        return `
+            <div class="donor-card">
+                <h3>${data.name}</h3>
+                <p><strong>Gender:</strong> ${data.gender}</p>
+                <p><strong>Blood Group:</strong> ${data.bloodGroup}</p>
+                <p><strong>Location:</strong> ${data.location}</p>
+                <p><strong>Contact:</strong> ${data.contact}</p>
+                <p><strong>Availability:</strong> ${data.availability}</p>
+            </div>
+        `;
+    }
+
+    // 📌 Function to Display Results or Error Message
+    function displayResults(results, detailsContent) {
+        detailsContent.innerHTML = results.length > 0 ? results.join("<hr>") : `<p style="color:red; text-align:center;">No matching donors found.</p>`;
+        document.getElementById("donor-details").classList.toggle("hidden", results.length === 0);
+    }
+});
+
+    </script>
+</body>
+</html>
